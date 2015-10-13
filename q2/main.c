@@ -15,6 +15,10 @@ int main(void)
     struct timespec start, end;
     double cpu_time;
 
+    assert(smallest_character("cfjpv", 'a') == 'c');
+    assert(smallest_character("cfjpv", 'e') == 'f');
+    assert(smallest_character("cfjpv", 'z') == 'c');
+
     assert(smallest_character(STR, FINDCHAR) == 'o');
     clock_gettime(CLOCK_REALTIME, &start);
     smallest = smallest_character(STR, FINDCHAR);
