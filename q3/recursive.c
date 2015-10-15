@@ -25,5 +25,6 @@ node *flatten(node *p)
         tmp = flatten(p->right);
 
     tmp->right = p->left;
-    return p->left;
+    p->left = NULL;
+    return tmp->right;
 }
