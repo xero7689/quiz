@@ -1,6 +1,26 @@
-/* FIXME: Implement! */
+#include <stdlib.h>
+#include "iterative.h"
 
-int main()
+ListNode *detectCycle(ListNode *head)
 {
-    return 0;
+    ListNode *first = head;
+    ListNode *second = head;
+
+    while (first != NULL && second != NULL) {
+        first = first->next;
+        second = second->next;
+        if (second != NULL)
+            second = second->next;
+        if (first == second)
+            break;
+    }
+
+    if (second == NULL) return NULL;
+
+    first = head;
+    while (first != second) {
+        first = first->next;
+        second = second->next;
+    }
+    return second;
 }

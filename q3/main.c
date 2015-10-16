@@ -12,6 +12,9 @@ int main(void)
 
     node *root = create_node();
     create_tree(root);
+#if defined(__GNUC__)
+    __builtin___clear_cache((char *) root, (char *) root + sizeof(node *));
+#endif
 
     printf("PostOrder: ");
     traversal_postOrder(root);
