@@ -20,3 +20,5 @@ char smallest_character(char str[], char c)
         return str[0];
     else return *smallest;
 }
+
+
