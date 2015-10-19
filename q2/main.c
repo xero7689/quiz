@@ -1,43 +1,46 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
+
+#define NDEBUG
 #include <assert.h>
 
 #include IMPL
 #include TIMER
 
-#define SORTED_ARRAY_SIZE 2600000
-#define SORTED_TXT "sorted.txt"
-
-int main(void)
+int main(int argc, char *argv[])
 {
-    FILE *fp;
-    char sorted[SORTED_ARRAY_SIZE];
+    if (argc == 0) perror("Please input a sorted string for searching!\n");
+    
+    char *string = argv[1];
+    char findChar = *argv[2];
+
+    FILE *output;
+    char *fn;
+    int sl = strlen(string);
+    if (!asprintf(&fn, "%s_%d.txt", argv[0], sl)) perror("Unable to create file name.\n");
+    output = fopen(fn, "a+");
+
     char smallest;
     struct timespec start, end;
     double cpu_time;
-    char randChar;
-    fp = fopen(SORTED_TXT, "r");
-    if (fp == NULL) {
-        printf("Cannot open the file.\n");
-        return -1;
-    }
-    fgets(sorted, sizeof(sorted), fp);
-    fclose(fp);
-    srand(time(NULL));
-
+    
     assert(smallest_character("cfjpv", 'a') == 'c');
     assert(smallest_character("cfjpv", 'e') == 'f');
     assert(smallest_character("cfjpv", 'z') == 'c');
 
-    randChar = 'a' + (random() % 26);
     clock_gettime(CLOCK_REALTIME, &start);
-    smallest = smallest_character(sorted, randChar);
+    smallest = smallest_character(string, findChar);
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time = diff_in_milisecond(&start, &end);
-    printf("Input: %c, Smallest: %c\n", randChar, smallest);
+    printf("String=%s\n", string);
+    printf("Input: %c, Smallest: %c\n", findChar, smallest);
     printf("Time exec: %lfms\n", cpu_time);
-
+    
+    fprintf(output, "%lf\n", cpu_time);
+    fclose(output);
 
     return 0;
 }
